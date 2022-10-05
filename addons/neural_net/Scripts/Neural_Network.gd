@@ -67,7 +67,7 @@ func set_activation_function(callback: Callable = Callable(Activation, "sigmoid"
 	activation_function = callback
 	activation_dfunction = dcallback
 
-func predict(input_array: Array) -> Array:
+func predict(input_array: Array[float]) -> Array:
 	var inputs = Matrix.from_array(input_array)
 	
 	var hidden = Matrix.product(weights_input_hidden, inputs)
