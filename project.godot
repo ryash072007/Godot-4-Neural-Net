@@ -1,0 +1,47 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "RefCounted",
+"class": &"Activation",
+"language": &"GDScript",
+"path": "res://addons/neural_net/Scripts/Activation.gd"
+}, {
+"base": "RefCounted",
+"class": &"Matrix",
+"language": &"GDScript",
+"path": "res://addons/neural_net/Scripts/Matrix.gd"
+}, {
+"base": "RefCounted",
+"class": &"NeuralNetwork",
+"language": &"GDScript",
+"path": "res://addons/neural_net/Scripts/Neural_Network.gd"
+}]
+_global_script_class_icons={
+"Activation": "",
+"Matrix": "",
+"NeuralNetwork": ""
+}
+
+[application]
+
+config/name="Neural Net Plugin"
+run/main_scene="res://Demo/demo.tscn"
+config/features=PackedStringArray("4.0", "Vulkan Clustered")
+config/icon="res://icon.svg"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/neural_net/plugin.cfg")
