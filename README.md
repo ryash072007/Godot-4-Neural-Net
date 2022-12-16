@@ -18,6 +18,7 @@ This is because the Neural Net only works when the Neural Network is named as "n
 var nn: NeuralNetwork
 ```
 This is because the Neural Net depends on the fact that "nn" is not assigned anything.
+
 3. When your AI or player has to be killed or removed, always use the "queue_free()" method. This is because the Neural Net relies on the signal emitted by the node when exiting the tree to recieve the fitness and Neural Network of that node. Example:
 ```
 Object.queue_free()
