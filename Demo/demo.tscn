@@ -36,7 +36,7 @@ sources/2 = SubResource("TileSetScenesCollectionSource_g384w")
 sources/3 = SubResource("TileSetScenesCollectionSource_imkqc")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mgyl3"]
-size = Vector2(41, 238)
+size = Vector2(35.5, 223)
 
 [node name="Demo" type="Node2D" groups=["demo"]]
 
@@ -629,41 +629,6 @@ position = Vector2(1072, 304)
 
 [node name="dieBlock21748" parent="track" instance=ExtResource("3_0836b")]
 position = Vector2(1072, 336)
-
-[node name="dieBlock21749" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 272)
-monitoring = false
-
-[node name="dieBlock21750" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 304)
-monitoring = false
-
-[node name="dieBlock21751" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 336)
-monitoring = false
-
-[node name="dieBlock21752" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 368)
-monitoring = false
-
-[node name="dieBlock21753" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 400)
-monitoring = false
-
-[node name="dieBlock21754" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 432)
-monitoring = false
-
-[node name="dieBlock21755" parent="track" instance=ExtResource("3_0836b")]
-modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1424, 464)
-monitoring = false
 
 [node name="block21750" parent="track" instance=ExtResource("2_nhllb")]
 position = Vector2(1072, 496)
@@ -2525,7 +2490,7 @@ script = ExtResource("2_bpcx6")
 
 [node name="CollisionShape2d" type="CollisionShape2D" parent="won"]
 modulate = Color(1, 0, 0.498039, 1)
-position = Vector2(1184, 368)
+position = Vector2(1197.25, 367.5)
 shape = SubResource("RectangleShape2D_mgyl3")
 
 [node name="Neural_Net" type="Node2D" parent="."]
@@ -2548,16 +2513,16 @@ theme_override_font_sizes/normal_font_size = 75
 [node name="Camera2d" type="Camera2D" parent="."]
 position = Vector2(720, 384)
 current = true
-zoom = Vector2(0.8, 0.8)
+zoom = Vector2(0.8, 0.85)
 
 [connection signal="tree_exiting" from="." to="." method="_on_demo_tree_exiting"]
 [connection signal="area_entered" from="track/kill" to="track/kill" method="_on_kill_area_entered"]
-[connection signal="area_entered" from="track/@kill@201815" to="track/@kill@201815" method="_on_kill_area_entered"]
-[connection signal="area_entered" from="track/@kill@201882" to="track/@kill@201882" method="_on_kill_area_entered"]
-[connection signal="area_entered" from="track/@kill@201883" to="track/@kill@201883" method="_on_kill_area_entered"]
-[connection signal="area_entered" from="track/@kill@201884" to="track/@kill@201884" method="_on_kill_area_entered"]
-[connection signal="area_entered" from="track/@kill@202438" to="track/@kill@202438" method="_on_kill_area_entered"]
-[connection signal="area_entered" from="track/@kill@202495" to="track/@kill@202495" method="_on_kill_area_entered"]
+[connection signal="area_entered" from="track/@kill@20017" to="track/@kill@20017" method="_on_kill_area_entered"]
+[connection signal="area_entered" from="track/@kill@20084" to="track/@kill@20084" method="_on_kill_area_entered"]
+[connection signal="area_entered" from="track/@kill@20085" to="track/@kill@20085" method="_on_kill_area_entered"]
+[connection signal="area_entered" from="track/@kill@20086" to="track/@kill@20086" method="_on_kill_area_entered"]
+[connection signal="area_entered" from="track/@kill@20640" to="track/@kill@20640" method="_on_kill_area_entered"]
+[connection signal="area_entered" from="track/@kill@20697" to="track/@kill@20697" method="_on_kill_area_entered"]
 [connection signal="body_entered" from="won" to="won" method="_on_won_body_entered"]
 [connection signal="gen_changed" from="Neural_Net" to="won" method="_on_neural_net_gen_changed"]
 [connection signal="true_batch_size" from="Neural_Net" to="won" method="_on_neural_net_true_batch_size"]

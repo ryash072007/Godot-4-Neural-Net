@@ -13,8 +13,6 @@ var nn: NeuralNetwork
 
 
 func _ready():
-#	if nn: print(nn.data_already_set)
-#	nn = NeuralNetwork.new($rays.get_child_count() + 1, 5, 1)
 	for child in $rays.get_children():
 		nn.raycasts.append(child)
 	$Sprite2d.modulate = nn.color
@@ -42,7 +40,5 @@ func _physics_process(delta):
 
 
 func _on_enemy_detector_area_entered(area: Node):
-#	print(area.group)
 	if area.is_in_group("enemy"):
-#		print("yes")
 		queue_free()

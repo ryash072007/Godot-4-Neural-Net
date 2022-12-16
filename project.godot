@@ -34,7 +34,7 @@ _global_script_class_icons={
 
 config/name="Neural Net Plugin"
 run/main_scene="res://Demo/demo.tscn"
-config/features=PackedStringArray("4.0", "Vulkan Clustered")
+config/features=PackedStringArray("4.0")
 config/icon="res://icon.svg"
 
 [display]

@@ -6,12 +6,12 @@ extends Node2D
 
 @export var Generation_Delay: int = 10
 
-#@export var spawn_position: Vector2 = Vector2.ZERO
+@export var show_only_best: bool = false
 
 signal gen_changed(_generation: int)
 signal true_batch_size(_size: int)
 
-
+var setting_up: bool = true
 var freeing: bool = false
 
 @export var input_nodes: int
@@ -29,13 +29,14 @@ var top_value_cutoff
 var generation: int = 0
 
 var best_nn: NeuralNetwork
-
+var spawn_population: Array = []
 var current_generation_freed: int = 0
 
 var first_gen_spawn_size
 var timer: Timer = Timer.new()
 
-#var getting_ready: bool = true
+
+var prev_best = null
 
 var best_10_nn: Array[NeuralNetwork]
 
@@ -60,7 +61,7 @@ func _ready():
 func spawn():
 	gen_changed.emit(generation)
 	print("Generation: ", generation)
-	var spawn_population: Array = []
+	spawn_population = []
 
 	
 	if generation == 0:
@@ -73,7 +74,6 @@ func spawn():
 		for i in range(Batch_Size):
 			var new_ai = AI_Scene.instantiate()
 			new_ai.nn =  NeuralNetwork.copy(NeuralNetwork.mutate(best_nn))
-#			new_ai.nn.data_already_set = true
 			spawn_population.append(new_ai)
 		
 		for i in range(random_population):
@@ -84,7 +84,6 @@ func spawn():
 			
 		var new_ai = AI_Scene.instantiate()
 		new_ai.nn = NeuralNetwork.copy(best_nn)
-#		new_ai.nn.data_already_set = true
 		spawn_population.append(new_ai)
 	
 		if use_reproduction:
@@ -111,47 +110,39 @@ func spawn():
 						var _new_ai = AI_Scene.instantiate()
 						_new_ai.nn = NeuralNetwork.new(input_nodes, hidden_nodes, output_nodes)
 						spawn_population.append(_new_ai)
-	
+	setting_up = true
 	for ai in spawn_population:
 		add_child(ai)
-	
+		if show_only_best: ai.modulate = Color(0, 0, 0, 0)
+	setting_up = false
 	timer.start(Generation_Delay)
 	true_batch_size.emit(spawn_population.size())
 	generation += 1
 	best_10_nn = []
 
 
+func _process(_delta):
+	if !show_only_best or setting_up: return
+	spawn_population.sort_custom(Callable(self, "custom_sort_visiblity"))
+
+	if prev_best != null and spawn_population[-1] != prev_best: prev_best.modulate = Color.TRANSPARENT
+	spawn_population[-1].modulate = spawn_population[-1].nn.color
+	prev_best = spawn_population[-1]
 
 func on_ai_exit_tree(node: Node):
-#	if getting_ready: return
 	if node is Timer: return
-#	if generation == 1:
-#		best_10_nn.push_front(NeuralNetwork.copy(node.nn))
 	if use_reproduction: best_10_nn.append(NeuralNetwork.copy(node.nn))
 	if node.nn.fitness > best_nn.fitness:
 		best_nn = NeuralNetwork.copy(node.nn)
-#		best_10_nn.append(NeuralNetwork.copy(node.nn))
-#	else:
-#		if best_10_nn.size() - 2 > 0: best_10_nn.insert(best_10_nn.size() - 2, NeuralNetwork.copy(node.nn))
-#		else: best_10_nn.push_front(NeuralNetwork.copy(node.nn))
-	
-#	print_debug(best_10_nn.size())
-	
+	spawn_population.erase(node)
 	if freeing: return
 	current_generation_freed += 1
-#	print(current_generation_freed)
 	if current_generation_freed == Batch_Size:
-#		print("reloaded")
 		reload_generation()
 
 func reload_generation():
 	best_10_nn.sort_custom(Callable(self, "custom_sort"))
-#	print(best_10_nn.size() == Batch_Size)
-#	best_10_nn = best_10_nn[best_10_nn.size() - top_value_cutoff]
-#	print(best_10_nn.size())
 	if use_reproduction: best_10_nn = best_10_nn.slice(best_10_nn.size() - top_value_cutoff, -1)
-	
-#	print(best_10_nn)
 	
 	freeing = true
 	timer.stop()
@@ -161,7 +152,9 @@ func reload_generation():
 	
 	spawn()
 	freeing = false
-#	await get_tree().create_timer(1).timeout
 
 func custom_sort(a, b):
 	return a.fitness < b.fitness
+
+func custom_sort_visiblity(a, b):
+	return a.nn.fitness < b.nn.fitness
