@@ -69,7 +69,7 @@ static func scalar(matrix: Matrix, value: float) -> Matrix:
 	
 	return result
 
-static func product(a: Matrix, b: Matrix) -> Matrix:
+static func dot_product(a: Matrix, b: Matrix) -> Matrix:
 	assert(a.cols == b.rows)
 
 	var result = Matrix.new(a.rows, b.cols)

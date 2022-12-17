@@ -1,9 +1,9 @@
 class_name NeuralNetwork
 
 var best: bool = false
-@export var input_nodes: int
-@export var hidden_nodes: int 
-@export var output_nodes: int
+var input_nodes: int
+var hidden_nodes: int 
+var output_nodes: int
 
 var weights_input_hidden: Matrix
 var weights_hidden_output: Matrix
@@ -11,7 +11,7 @@ var weights_hidden_output: Matrix
 var bias_hidden: Matrix
 var bias_output: Matrix
 
-@export var learning_rate: float = 0.15
+var learning_rate: float = 0.15
 
 
 var activation_function: Callable
@@ -19,7 +19,7 @@ var activation_dfunction: Callable
 
 var fitness: float = 0.0
 
-var color: Color = Color(0, 0, 0, 0)
+var color: Color = Color.TRANSPARENT
 
 var raycasts: Array[RayCast2D]
 
@@ -42,7 +42,7 @@ func _init(_input_nodes: int, _hidden_nodes: int, _output_nodes: int, is_set: bo
 func set_nn_color():
 	color = Color(Matrix.average(weights_input_hidden),
 	Matrix.average(weights_hidden_output),
-	Matrix.average(Matrix.product(bias_hidden, bias_output)), 1)
+	Matrix.average(Matrix.dot_product(bias_hidden, bias_output)), 1)
 
 func set_activation_function(callback: Callable = Callable(Activation, "sigmoid"), dcallback: Callable = Callable(Activation, "dsigmoid")) -> void:
 	activation_function = callback
@@ -51,11 +51,11 @@ func set_activation_function(callback: Callable = Callable(Activation, "sigmoid"
 func predict(input_array: Array[float]) -> Array:
 	var inputs = Matrix.from_array(input_array)
 	
-	var hidden = Matrix.product(weights_input_hidden, inputs)
+	var hidden = Matrix.dot_product(weights_input_hidden, inputs)
 	hidden = Matrix.add(hidden, bias_hidden)
 	hidden = Matrix.map(hidden, activation_function)
 
-	var output = Matrix.product(weights_hidden_output, hidden)
+	var output = Matrix.dot_product(weights_hidden_output, hidden)
 	output = Matrix.add(output, bias_output)
 	output = Matrix.map(output, activation_function)
 
@@ -65,11 +65,11 @@ func train(input_array: Array, target_array: Array):
 	var inputs = Matrix.from_array(input_array)
 	var targets = Matrix.from_array(target_array)
 	
-	var hidden = Matrix.product(weights_input_hidden, inputs);
+	var hidden = Matrix.dot_product(weights_input_hidden, inputs);
 	hidden = Matrix.add(hidden, bias_hidden)
 	hidden = Matrix.map(hidden, activation_function)
 	
-	var outputs = Matrix.product(weights_hidden_output, hidden)
+	var outputs = Matrix.dot_product(weights_hidden_output, hidden)
 	outputs = Matrix.add(outputs, bias_output)
 	outputs = Matrix.map(outputs, activation_function)
 	
@@ -80,20 +80,20 @@ func train(input_array: Array, target_array: Array):
 	gradients = Matrix.scalar(gradients, learning_rate)
 	
 	var hidden_t = Matrix.transpose(hidden)
-	var weight_ho_deltas = Matrix.product(gradients, hidden_t)
+	var weight_ho_deltas = Matrix.dot_product(gradients, hidden_t)
 	
 	weights_hidden_output = Matrix.add(weights_hidden_output, weight_ho_deltas)
 	bias_output = Matrix.add(bias_output, gradients)
 	
 	var weights_hidden_output_t = Matrix.transpose(weights_hidden_output)
-	var hidden_errors = Matrix.product(weights_hidden_output_t, output_errors)
+	var hidden_errors = Matrix.dot_product(weights_hidden_output_t, output_errors)
 	
 	var hidden_gradient = Matrix.map(hidden, activation_dfunction)
 	hidden_gradient = Matrix.multiply(hidden_gradient, hidden_errors)
 	hidden_gradient = Matrix.scalar(hidden_gradient, learning_rate)
 	
 	var inputs_t = Matrix.transpose(inputs)
-	var weight_ih_deltas = Matrix.product(hidden_gradient, inputs_t)
+	var weight_ih_deltas = Matrix.dot_product(hidden_gradient, inputs_t)
 
 	weights_input_hidden = Matrix.add(weights_input_hidden, weight_ih_deltas)
 
