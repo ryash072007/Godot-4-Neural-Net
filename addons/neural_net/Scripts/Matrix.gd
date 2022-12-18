@@ -82,6 +82,22 @@ static func dot_product(a: Matrix, b: Matrix) -> Matrix:
 
 	return result
 
+static func dot_divide(a: Matrix, b: Matrix) -> Matrix:
+	assert(a.cols == b.rows)
+
+	var result = Matrix.new(a.rows, b.cols)
+
+	for row in range(result.rows):
+		for col in range(result.cols):
+			result.data[row][col] = 0.0
+			for k in range(a.cols):
+				result.data[row][col] += b.data[k][col] / a.data[row][k]
+
+	return result
+
+
+
+
 static func multiply(a: Matrix, b: Matrix) -> Matrix:
 	assert(a.rows == b.rows and a.cols == b.cols)
 	
@@ -90,6 +106,18 @@ static func multiply(a: Matrix, b: Matrix) -> Matrix:
 	for row in range(result.rows):
 		for col in range(result.cols):
 			result.data[row][col] = a.data[row][col] * b.data[row][col]
+	
+	return result
+
+
+static func divide(a: Matrix, b: Matrix) -> Matrix:
+	assert(a.rows == b.rows and a.cols == b.cols)
+	
+	var result = Matrix.new(a.rows, a.cols)
+	
+	for row in range(result.rows):
+		for col in range(result.cols):
+			result.data[row][col] = a.data[row][col] / b.data[row][col]
 	
 	return result
 

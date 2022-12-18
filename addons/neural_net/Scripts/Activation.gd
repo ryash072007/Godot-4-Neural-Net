@@ -10,7 +10,10 @@ static func relu(value: float, _row: int, _col: int) -> float:
 	return max(0.0, value)
 
 static func drelu(value: float, _row: int, _col: int) -> float:
-	return 0.0 if value < 0 else 1.0
+	if value < 0:
+		return 0.0
+	else:
+		return 1.0
 
 static func tanh_(value: float, _row: int, _col: int) -> float:
 	return tanh(value)
@@ -34,7 +37,10 @@ static func dprelu(value: float, _row: int, _col: int) -> float:
 
 static func elu(value: float, _row: int, _col: int) -> float:
 	var alpha: float = 0.1
-	return (alpha * (exp(value) - 1)) if value < 0 else value
+	if value < 0:
+		return alpha * (exp(value) - 1)
+	else:
+		return value
 
 static func delu(value: float, _row: int, _col: int) -> float:
 	var alpha: float = 0.1
